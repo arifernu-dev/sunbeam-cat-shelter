@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- EDIT — Browser tab title -->
+  <title>Sunbeam Cat Shelter — Find your next best friend</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===========================================================
+       1. DESIGN TOKENS  — change these to restyle the whole site
+       =========================================================== */
+    :root {
+      --paper:    #FBF6EC;   /* warm cream background */
+      --card:     #FFFFFF;
+      --ink:      #243B36;   /* deep teal-green — main text */
+      --ink-soft: #5A6B65;   /* muted — secondary text */
+      --sun:      #E0A92E;   /* marigold "sunbeam" accent */
+      --coral:    #E2674A;   /* warm coral — used only for donate/hearts */
+      --line:     rgba(36, 59, 54, 0.12);
+      --max:      1040px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Hanken Grotesk', system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 22px; }
+    .display { font-family: 'Bricolage Grotesque', sans-serif; letter-spacing: -0.02em; }
+
+    /* ===========================================================
+       2. HEADER / NAV
+       =========================================================== */
+    header {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(251, 246, 236, 0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 1.2rem; }
+    .brand svg { width: 30px; height: 30px; }
+    .nav-links { display: flex; gap: 26px; align-items: center; }
+    .nav-links a { color: var(--ink); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+    .nav-links a:hover { color: var(--sun); }
+    .nav-links a.give {
+      background: var(--coral); color: #fff; padding: 9px 18px; border-radius: 999px; font-weight: 600;
+    }
+    .nav-links a.give:hover { color: #fff; opacity: 0.92; }
+    /* Hide text links on small screens, keep the Donate button */
+    @media (max-width: 620px) { .nav-links a:not(.give) { display: none; } }
+
+    /* ===========================================================
+       3. HERO
+       =========================================================== */
+    .hero { padding: 70px 0 50px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 30px; align-items: center; }
+    @media (max-width: 760px) { .hero { grid-template-columns: 1fr; text-align: center; } }
+    .hero h1 { font-size: clamp(2.6rem, 7vw, 4.6rem); font-weight: 800; line-height: 1.02; }
+    .hero h1 em { color: var(--sun); font-style: normal; }
+    .hero p { margin-top: 18px; font-size: 1.12rem; color: var(--ink-soft); max-width: 46ch; }
+    @media (max-width: 760px) { .hero p { margin-inline: auto; } }
+    .hero-actions { margin-top: 28px; display: flex; gap: 14px; flex-wrap: wrap; }
+    @media (max-width: 760px) { .hero-actions { justify-content: center; } }
+    .btn { font-weight: 600; text-decoration: none; border-radius: 999px; padding: 14px 28px; font-size: 1rem; transition: transform 0.15s ease; }
+    .btn-sun { background: var(--sun); color: #2b1f00; }
+    .btn-line { border: 1.5px solid var(--ink); color: var(--ink); }
+    .btn:hover { transform: translateY(-2px); }
+
+    /* The big friendly cat — your signature element, drawn in code */
+    .hero-art { display: flex; justify-content: center; }
+    .hero-art .scene { width: min(330px, 80%); }
+    .cat-eye { transform-origin: center; animation: blink 5.5s infinite; }
+    @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+
+    /* ===========================================================
+       4. SECTION SHELL
+       =========================================================== */
+    section.block { padding: 60px 0; }
+    .eyebrow { font-family: 'Bricolage Grotesque'; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.8rem; color: var(--sun); }
+    .block h2 { font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: clamp(2rem, 5vw, 3rem); margin: 10px 0 6px; }
+    .block .sub { color: var(--ink-soft); max-width: 50ch; }
+
+    /* ===========================================================
+       5. THE CAT GRID  ⭐ This is the pattern to learn.
+          Each .cat-card is one cat. Copy a whole card block to
+          add a new cat; edit the name, age, and line inside.
+       =========================================================== */
+    .cats { margin-top: 36px; display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+    .cat-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; transition: transform 0.18s ease, box-shadow 0.18s ease; }
+    .cat-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(36, 59, 54, 0.1); }
+
+    /* The photo area. Right now it's a colored block with a drawn cat.
+       To use a real photo, replace the <div class="cat-photo">...</div>
+       with:  <img class="cat-photo" src="mango.jpg" alt="Mango" />  */
+    .cat-photo { aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; }
+    .cat-photo svg { width: 78px; height: 78px; opacity: 0.85; }
+    .tint-1 { background: #F3E2BC; } .tint-2 { background: #DCE7DA; }
+    .tint-3 { background: #F4D9CE; } .tint-4 { background: #E3DCEC; }
+    .tint-5 { background: #FCE9C7; } .tint-6 { background: #D9E6E6; }
+    .cat-body { padding: 18px 18px 22px; }
+    .cat-name { font-family: 'Bricolage Grotesque'; font-weight: 700; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: baseline; }
+    .cat-name span { font-family: 'Hanken Grotesk'; font-weight: 500; font-size: 0.85rem; color: var(--ink-soft); }
+    .cat-desc { color: var(--ink-soft); margin: 6px 0 16px; font-size: 0.96rem; }
+    .cat-link { font-weight: 600; color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--sun); padding-bottom: 2px; }
+    .cat-link:hover { color: var(--sun); }
+
+    /* ===========================================================
+       6. HOW ADOPTION WORKS — a real 3-step sequence
+       =========================================================== */
+    .steps-block { background: var(--ink); color: var(--paper); border-radius: 28px; margin: 20px 0; padding: 56px 0; }
+    .steps-block .eyebrow { color: var(--sun); }
+    .steps-block h2 { color: var(--paper); }
+    .steps { margin-top: 34px; display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .step .num { font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 2.4rem; color: var(--sun); }
+    .step h3 { font-family: 'Bricolage Grotesque'; font-size: 1.2rem; margin: 6px 0 6px; }
+    .step p { color: rgba(251, 246, 236, 0.75); font-size: 0.96rem; }
+
+    /* ===========================================================
+       7. VISIT / FOOTER
+       =========================================================== */
+    .visit { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    @media (max-width: 700px) { .visit { grid-template-columns: 1fr; } }
+    .info-line { padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .info-line strong { font-family: 'Bricolage Grotesque'; display: block; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sun); margin-bottom: 2px; }
+    footer { border-top: 1px solid var(--line); padding: 40px 0; text-align: center; color: var(--ink-soft); font-size: 0.9rem; }
+    footer .heart { color: var(--coral); }
+
+    /* Accessibility floor */
+    a:focus-visible, .btn:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; border-radius: 6px; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .cat-eye { animation: none; }
+      .cat-card:hover { transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =================== HEADER =================== -->
+  <header>
+    <div class="wrap nav">
+      <div class="brand">
+        <!-- small cat logo -->
+        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M14 20 L20 8 L26 20 Z M50 20 L44 8 L38 20 Z" fill="#243B36"/>
+          <circle cx="32" cy="36" r="22" fill="#E0A92E"/>
+          <circle cx="24" cy="34" r="2.6" fill="#243B36"/>
+          <circle cx="40" cy="34" r="2.6" fill="#243B36"/>
+          <path d="M30 41 q2 2 4 0" stroke="#243B36" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+        <!-- EDIT — Shelter name -->
+        Sunbeam
+      </div>
+      <nav class="nav-links">
+        <a href="#cats">Adopt</a>
+        <a href="#how">How it works</a>
+        <a href="#visit">Visit</a>
+        <a class="give" href="#visit">Donate</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- =================== HERO =================== -->
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <!-- EDIT — Headline. The <em> word is the colored one. -->
+        <h1 class="display">Every cat deserves a <em>sunny spot</em> to call home.</h1>
+        <p>We're a small, no-kill shelter helping rescued cats find the people they'll spend the rest of their nine lives with.</p>
+        <div class="hero-actions">
+          <a class="btn btn-sun" href="#cats">Meet the cats</a>
+          <a class="btn btn-line" href="#visit">Visit us</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <!-- A cat curled in a sunbeam, drawn entirely in code -->
+        <svg class="scene" viewBox="0 0 260 220" fill="none" aria-hidden="true">
+          <ellipse cx="130" cy="186" rx="96" ry="18" fill="#243B36" opacity="0.07"/>
+          <path d="M40 30 L120 30 L80 150 L20 150 Z" fill="#E0A92E" opacity="0.22"/>
+          <!-- body -->
+          <path d="M70 175 q-30 -6 -30 -40 q0 -46 60 -46 q70 0 96 28 q22 24 4 46 q-14 16 -42 16 Z" fill="#3A554E"/>
+          <!-- tail -->
+          <path d="M205 168 q40 6 34 -34 q-4 -22 -22 -20" stroke="#3A554E" stroke-width="16" fill="none" stroke-linecap="round"/>
+          <!-- head -->
+          <circle cx="92" cy="120" r="44" fill="#46665E"/>
+          <path d="M58 92 L66 66 L86 88 Z M126 92 L118 66 L98 88 Z" fill="#46665E"/>
+          <path d="M62 88 L67 74 L78 86 Z M122 88 L117 74 L106 86 Z" fill="#E2674A" opacity="0.55"/>
+          <!-- eyes (these blink) -->
+          <ellipse class="cat-eye" cx="78" cy="118" rx="4.5" ry="6" fill="#243B36"/>
+          <ellipse class="cat-eye" cx="106" cy="118" rx="4.5" ry="6" fill="#243B36"/>
+          <!-- nose + mouth -->
+          <path d="M89 128 L95 128 L92 132 Z" fill="#E2674A"/>
+          <path d="M92 132 q-5 5 -10 3 M92 132 q5 5 10 3" stroke="#243B36" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- whiskers -->
+          <path d="M70 126 L40 122 M70 132 L42 134 M114 126 L144 122 M114 132 L142 134" stroke="#243B36" stroke-width="1.4" opacity="0.5"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- =================== CATS =================== -->
+    <section class="block wrap" id="cats">
+      <p class="eyebrow">Looking for a home</p>
+      <h2>Meet the cats</h2>
+      <p class="sub">Each of these friends is spayed/neutered, vaccinated, and ready to go. Tap any of them to say hello.</p>
+
+      <div class="cats">
+
+        <!-- ⭐ ONE CAT = ONE CARD. Copy everything from <article> to
+             </article> and paste it below to add another cat.
+             Then change the name, age, line, and tint number. -->
+        <article class="cat-card">
+          <div class="cat-photo tint-1">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 20 L20 8 L26 20 Z M50 20 L44 8 L38 20 Z" fill="#243B36"/><circle cx="32" cy="36" r="20" fill="#fff"/><circle cx="25" cy="34" r="2.4" fill="#243B36"/><circle cx="39" cy="34" r="2.4" fill="#243B36"/></svg>
+          </div>
+          <div class="cat-body">
+            <div class="cat-name">Mango <span>2 yrs</span></div>
+            <p class="cat-desc">Will supervise all of your video calls. Loudly.</p>
+            <a class="cat-link" href="#visit">Meet Mango →</a>
+          </div>
+        </article>
+
+        <article class="cat-card">
+          <div class="cat-photo tint-2">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 20 L20 8 L26 20 Z M50 20 L44 8 L38 20 Z" fill="#243B36"/><circle cx="32" cy="36" r="20" fill="#fff"/><circle cx="25" cy="34" r="2.4" fill="#243B36"/><circle cx="39" cy="34" r="2.4" fill="#243B36"/></svg>
+          </div>
+          <div class="cat-body">
+            <div class="cat-name">Olive <span>7 yrs</span></div>
+            <p class="cat-desc">A calm lap-cat who has seen some things and forgiven them all.</p>
+            <a class="cat-link" href="#visit">Meet Olive →</a>
+          </div>
+        </article>
+
+        <article class="cat-card">
+          <div class="cat-photo tint-3">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 20 L20 8 L26 20 Z M50 20 L44 8 L38 20 Z" fill="#243B36"/><circle cx="32" cy="36" r="20" fill="#fff"/><circle cx="25" cy="34" r="2.4" fill="#243B36"/><circle cx="39" cy="34" r="2.4" fill="#243B36"/></svg>
+          </div>
+          <div class="cat-body">
+            <div class="cat-name">Frijol <span>4 mo</span></div>
+            <p class="cat-desc">Pure chaos, zero regrets. Comes with a free roll of tape for your cords.</p>
+            <a class="cat-link" href="#visit">Meet Frijol →</a>
+          </div>
+        </article>
+
+        <article class="cat-card">
+          <div class="cat-photo tint-4">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 20 L20 8 L26 20 Z M50 20 L44 8 L38 20 Z" fill="#243B36"/><circle cx="32" cy="36" r="20" fill="#fff"/><circle cx="25" cy="34" r="2.4" fill="#243B36"/><circle cx="39" cy="34" r="2.4" fill="#243B36"/></svg>
+          </div>
+          <div class="cat-body">
+            <div class="cat-name">Luna <span>3 yrs</span></div>
+            <p class="cat-desc">Shy for the first week, then devoted to you forever.</p>
+            <a class="cat-link" href="#visit">Meet Luna →</a>
+          </div>
+        </article>
+
+        <article class="cat-card">
+          <div class="cat-photo tint-5">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 20 L20 8 L26 20 Z M50 20 L44 8 L38 20 Z" fill="#243B36"/><circle cx="32" cy="36" r="20" fill="#fff"/><circle cx="25" cy="34" r="2.4" fill="#243B36"/><circle cx="39" cy="34" r="2.4" fill="#243B36"/></svg>
+          </div>
+          <div class="cat-body">
+            <div class="cat-name">Coco <span>5 yrs</span></div>
+            <p class="cat-desc">Professional sunbather. Will find the one warm tile in any room.</p>
+            <a class="cat-link" href="#visit">Meet Coco →</a>
+          </div>
+        </article>
+
+        <article class="cat-card">
+          <div class="cat-photo tint-6">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 20 L20 8 L26 20 Z M50 20 L44 8 L38 20 Z" fill="#243B36"/><circle cx="32" cy="36" r="20" fill="#fff"/><circle cx="25" cy="34" r="2.4" fill="#243B36"/><circle cx="39" cy="34" r="2.4" fill="#243B36"/></svg>
+          </div>
+          <div class="cat-body">
+            <div class="cat-name">Pulga <span>1 yr</span></div>
+            <p class="cat-desc">Small name, enormous personality. Believes she is a large dog.</p>
+            <a class="cat-link" href="#visit">Meet Pulga →</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =================== HOW IT WORKS =================== -->
+    <section class="block wrap" id="how">
+      <div class="steps-block">
+        <div class="wrap">
+          <p class="eyebrow">It's simpler than you think</p>
+          <h2 class="display">How adoption works</h2>
+          <div class="steps">
+            <div class="step">
+              <div class="num">01</div>
+              <h3>Come say hi</h3>
+              <p>Visit us during open hours and spend time with the cats. No appointment needed.</p>
+            </div>
+            <div class="step">
+              <div class="num">02</div>
+              <h3>Have a chat</h3>
+              <p>We talk through your home and routine to find the right match — for you and the cat.</p>
+            </div>
+            <div class="step">
+              <div class="num">03</div>
+              <h3>Go home together</h3>
+              <p>A small adoption fee covers vaccines and care. Then your new friend comes home.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== VISIT =================== -->
+    <section class="block wrap" id="visit">
+      <p class="eyebrow">Come by</p>
+      <h2>Visit &amp; get involved</h2>
+      <div class="visit" style="margin-top: 28px;">
+        <div>
+          <!-- EDIT — Your real address, hours, and contact -->
+          <div class="info-line"><strong>Where</strong>12 Rue des Petits Chats, 75019 Paris</div>
+          <div class="info-line"><strong>Open hours</strong>Wed–Sun, 11:00–18:00</div>
+          <div class="info-line"><strong>Email</strong>hello@sunbeamcats.example</div>
+        </div>
+        <div>
+          <div class="info-line"><strong>Volunteer</strong>We always need help with feeding, socializing, and weekend events.</div>
+          <div class="info-line"><strong>Foster</strong>Short on space? Foster a cat until they find a home.</div>
+          <div class="info-line"><strong>Donate</strong>Every euro goes to food, litter, and vet care.</div>
+        </div>
+      </div>
+      <div style="margin-top: 30px;">
+        <a class="btn btn-sun" href="mailto:hello@sunbeamcats.example">Email us to help</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Sunbeam Cat Shelter · A practice project · Made with <span class="heart">♥</span> and HTML
+    </div>
+  </footer>
+
+</body>
+</html>
