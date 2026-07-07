@@ -16,15 +16,16 @@
        1. DESIGN TOKENS  — change these to restyle the whole site
        =========================================================== */
     :root {
-      --paper:    #FBF6EC;   /* warm cream background */
-      --card:     #FFFFFF;
-      --ink:      #243B36;   /* deep teal-green — main text */
-      --ink-soft: #5A6B65;   /* muted — secondary text */
-      --sun:      #E0A92E;   /* marigold "sunbeam" accent */
-      --coral:    #E2674A;   /* warm coral — used only for donate/hearts */
-      --line:     rgba(36, 59, 54, 0.12);
-      --max:      1040px;
-    }
+  --paper:    #0D0221;   /* deep space purple-black background */
+  --card:     #1A0B3D;   /* dark violet cards */
+  --ink:      #F2F0FF;   /* near-white text — needed on dark bg */
+  --ink-soft: #B8A8E0;   /* soft lilac — secondary text */
+  --sun:      #00F5D4;   /* electric cyan — buttons, links */
+  --coral:    #FF2D95;   /* hot magenta — the Donate button */
+  --line:     rgba(242, 240, 255, 0.15);
+  --max:      1040px;
+}
+
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -108,9 +109,10 @@
 img.cat-photo { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
 
 
-    .tint-1 { background: #F3E2BC; } .tint-2 { background: #DCE7DA; }
-    .tint-3 { background: #F4D9CE; } .tint-4 { background: #E3DCEC; }
-    .tint-5 { background: #FCE9C7; } .tint-6 { background: #D9E6E6; }
+   .tint-1 { background: #FF2D95; } .tint-2 { background: #00F5D4; }
+.tint-3 { background: #FEE440; } .tint-4 { background: #9B5DE5; }
+.tint-5 { background: #00BBF9; } .tint-6 { background: #F15BB5; }
+
     .cat-body { padding: 18px 18px 22px; }
     .cat-name { font-family: 'Bricolage Grotesque'; font-weight: 700; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: baseline; }
     .cat-name span { font-family: 'Hanken Grotesk'; font-weight: 500; font-size: 0.85rem; color: var(--ink-soft); }
